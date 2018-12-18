@@ -20,7 +20,7 @@ from django.urls import path, include
 from online_shop import settings
 
 api_urls = [
-    path('products', include(('products.urls', 'products'), namespace='products')),
+    path('products/', include(('products.urls', 'products'), namespace='products')),
 ]
 
 urlpatterns = [
