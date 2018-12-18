@@ -3,7 +3,8 @@
 
 import os
 import time
-import psycopg2
+
+import psycopg2 as psycopg2
 
 
 def is_postgress_ready(host, user, password, dbname, port=5432):
