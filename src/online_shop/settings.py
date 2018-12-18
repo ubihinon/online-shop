@@ -12,6 +12,17 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+from django.core.exceptions import ImproperlyConfigured
+from kombu import Queue, Exchange
+
+
+def get_env_var(var_name):
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        raise ImproperlyConfigured(f'Set {var_name} environment variable.')
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,7 +31,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '84%^3yf(j#$2gnzxmk^#xjd*g9np+2j=&n@yw066!b_%n7hxt@'
+SECRET_KEY = get_env_var('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +89,12 @@ WSGI_APPLICATION = 'online_shop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': get_env_var('DB_NAME'),
+        'USER': get_env_var('DB_USER'),
+        'PASSWORD': get_env_var('DB_PASSWORD'),
+        'HOST': get_env_var('DB_HOST'),
+        'PORT': get_env_var('DB_PORT'),
     }
 }
 
@@ -101,6 +118,16 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+    )
+}
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -119,3 +146,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+
+BROKER_URL = 'redis://redis:6379/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ENABLE_UTC = True
+CELERY_TIMEZONE = TIME_ZONE
+
+CELERY_DEFAULT_QUEUE = 'default'
+CELERY_QUEUES = (
+    Queue('default', Exchange('default'), routing_key='default'),
+)
+
+CELERY_IGNORE_RESULT = True
