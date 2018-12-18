@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
@@ -11,7 +10,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
 
     def get_permissions(self):
-        if self.action in ('create', 'retrieve', 'destroy'):
+        if self.action in ('create', 'update', 'destroy'):
             self.permission_classes = [IsAdminUser]
         else:
             self.permission_classes = [IsAuthenticated]
