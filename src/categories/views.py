@@ -17,6 +17,6 @@ class CategoryViewSet(viewsets.ModelViewSet):
         return super().get_permissions()
 
     def get_serializer_class(self):
-        if self.action == 'create':
+        if self.action in ('create', 'update'):
             return CategoryCreateSerializer
         return CategorySerializer
