@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 python /app/wait_for_postgres.py
-cd /app/src
+cd /src
 
 python manage.py migrate
 python manage.py initadmin
