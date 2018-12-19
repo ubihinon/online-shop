@@ -21,6 +21,7 @@ from online_shop import settings
 
 api_urls = [
     path('products/', include(('products.urls', 'products'), namespace='products')),
+    path('categories/', include(('categories.urls', 'categories'), namespace='categories')),
 ]
 
 urlpatterns = [
