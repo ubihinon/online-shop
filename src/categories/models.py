@@ -8,7 +8,6 @@ class Category(models.Model):
     def __str__(self):
         full_path = [self.name]
         k = self.parent
-
         while k is not None:
             full_path.append(k.name)
             k = k.parent
