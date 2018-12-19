@@ -1,0 +1,102 @@
+[
+  {
+    "model": "products.product",
+    "pk": 1,
+    "fields": {
+      "name": "prod 1",
+      "description": "prod 1",
+      "price": "1000.00",
+      "category": 1
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 2,
+    "fields": {
+      "name": "prod 2",
+      "description": "prod 2",
+      "price": "1040.00",
+      "category": 1
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 3,
+    "fields": {
+      "name": "prod 3",
+      "description": "prod 3",
+      "price": "1040.50",
+      "category": 1
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 4,
+    "fields": {
+      "name": "prod 4",
+      "description": "prod 4",
+      "price": "40.50",
+      "category": 1
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 5,
+    "fields": {
+      "name": "prod 5",
+      "description": "prod 5",
+      "price": "450.00",
+      "category": 3
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 6,
+    "fields": {
+      "name": "prod 6",
+      "description": "prod 6",
+      "price": "345.00",
+      "category": 3
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 7,
+    "fields": {
+      "name": "prod 7",
+      "description": "prod 7",
+      "price": "76.00",
+      "category": 3
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 8,
+    "fields": {
+      "name": "prod 8",
+      "description": "prod 8",
+      "price": "654.00",
+      "category": 3
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 9,
+    "fields": {
+      "name": "prod 9",
+      "description": "prod 9",
+      "price": "798.00",
+      "category": 3
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 10,
+    "fields": {
+      "name": "prod 10",
+      "description": "prod 10",
+      "price": "4350.00",
+      "category": 3
+    }
+  }
+]
