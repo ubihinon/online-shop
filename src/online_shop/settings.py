@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'users',
     'products',
     'categories',
+    'web_ui',
 ]
 
 MIDDLEWARE = [
@@ -77,8 +78,7 @@ ROOT_URLCONF = 'online_shop.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, '../../templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, '../web_ui/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -196,6 +196,9 @@ LOGGING = {
     },
 }
 
+
+LOGIN_REDIRECT_URL = 'products'
+LOGOUT_REDIRECT_URL = 'products'
 
 BROKER_URL = 'redis://redis:6379/0'
 CELERY_ACCEPT_CONTENT = ['application/json']

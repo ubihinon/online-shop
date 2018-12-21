@@ -26,5 +26,6 @@ api_urls = [
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(api_urls))
+    path('api/', include(api_urls)),
+    path('', include('web_ui.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
