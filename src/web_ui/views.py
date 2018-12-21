@@ -1,13 +1,15 @@
 from django.shortcuts import get_object_or_404
+from django.template.loader_tags import register
 from django.views.generic import ListView, DetailView
 
 from categories.models import Category
 from products.models import Product
 
-
+@register.simple_tag
 def show_categories():
     return {
-        'categories': Category.objects.get_root_categories()
+        # 'categories': Category.objects.get_root_categories()
+        'categories': Category.objects.all()
     }
 
 
@@ -33,7 +35,6 @@ class ProductList(ListView):
     template_name = 'categories/product-list.html'
 
     def get_context_data(self, *args, **kwargs):
-        # if self.kwargs.get('category_id'):
         category = get_object_or_404(Category, id=self.kwargs.get('category_id'))
         return {
             'category': category
@@ -47,7 +48,6 @@ class ProductDetail(DetailView):
     slug_field = 'product_id'
 
     def get_context_data(self, *args, **kwargs):
-        print(f"PRODUCT: {self.kwargs.get('pk')}")
         product = get_object_or_404(Product, id=self.kwargs.get('pk'))
         return {
             'product': product
