@@ -6,19 +6,31 @@ from rest_framework.viewsets import GenericViewSet
 from products.models import Product
 from shopping_baskets.models import ShoppingBasket
 from shopping_baskets.permissions import IsOwner
-from shopping_baskets.serializers import ShoppingBasketSerializer, ShoppingBasketCreateSerializer
+from shopping_baskets.serializers import (
+    ShoppingBasketSerializer,
+    ShoppingBasketRetrieveSerializer
+)
 
 
-class ShoppingBasketViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
-    queryset = ShoppingBasket.objects.all()
-    serializer_class = ShoppingBasketCreateSerializer
+class ShoppingBasketViewSet(mixins.RetrieveModelMixin,
+                            mixins.ListModelMixin,
+                            GenericViewSet):
     permission_classes = (IsOwner,)
+
+    def get_serializer_class(self):
+        if self.action in ('list', 'retrieve'):
+            return ShoppingBasketRetrieveSerializer
+        return ShoppingBasketSerializer
+
+    def get_queryset(self):
+        if self.request.user.id:
+            return ShoppingBasket.objects.filter(user=self.request.user)
+        return []
 
     @action(
         detail=True,
         url_path='products',
-        methods=['PUT'],
-        serializer_class=ShoppingBasketSerializer
+        methods=['PUT']
     )
     def add_products(self, request, *args, **kwargs):
         basket = ShoppingBasket.objects.get(id=self.kwargs.get('pk'), user=request.user)
@@ -39,8 +51,7 @@ class ShoppingBasketViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, 
     @action(
         detail=True,
         url_path='products/(?P<product_id>[^/.]+)',
-        methods=['DELETE'],
-        serializer_class=ShoppingBasketSerializer
+        methods=['DELETE']
     )
     def delete_product(self, request, *args, **kwargs):
         if self.kwargs.get('product_id').isdigit():
