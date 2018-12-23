@@ -22,6 +22,10 @@ from online_shop import settings
 api_urls = [
     path('products/', include(('products.urls', 'products'), namespace='products')),
     path('categories/', include(('categories.urls', 'categories'), namespace='categories')),
+    path(
+        'shopping_baskets/',
+        include(('shopping_baskets.urls', 'shopping_baskets'), namespace='shopping_baskets')
+    ),
 ]
 
 urlpatterns = [

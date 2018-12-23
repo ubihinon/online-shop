@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'products',
     'categories',
     'web_ui',
+    'shopping_baskets',
 ]
 
 MIDDLEWARE = [
@@ -197,8 +198,8 @@ LOGGING = {
 }
 
 
-LOGIN_REDIRECT_URL = 'products'
-LOGOUT_REDIRECT_URL = 'products'
+LOGIN_REDIRECT_URL = 'categories'
+LOGOUT_REDIRECT_URL = 'categories'
 
 BROKER_URL = 'redis://redis:6379/0'
 CELERY_ACCEPT_CONTENT = ['application/json']
