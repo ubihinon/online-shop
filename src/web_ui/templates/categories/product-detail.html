@@ -13,12 +13,18 @@
           {{ product.description }}
         </div>
         <div class="card-action">
-          <a id="addBasketButton-{{ product.id }}"
-             onclick="addProductInBasket({{ product.id }})"
-             product_id="{{ product.id }}"
-             url="{% url 'shopping_baskets:shopping-baskets-add-products' basket.id %}">
-            Buy
-          </a>
+          {% if basket %}
+            <a id="addBasketButton-{{ product.id }}"
+               onclick="addProductInBasket({{ product.id }})"
+               product_id="{{ product.id }}"
+               url="{% url 'shopping_baskets:shopping-baskets-add-products' basket.id %}">
+              Buy
+            </a>
+          {% else %}
+            <h6 class="row center-align">
+              In order to add products in the shopping basket you need to register or log in
+            </h6>
+          {% endif %}
         </div>
       </div>
     </div>

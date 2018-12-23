@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AnonymousUser
 from django.shortcuts import get_object_or_404
 from django.template.loader_tags import register
 from django.views.generic import ListView, DetailView, TemplateView
@@ -18,14 +19,10 @@ def show_categories():
 class CategoryList(ListView):
     model = Category
     fields = ('id', 'name',)
-    template_name = 'categories/category-list.html'
+    template_name = 'categories/categories.html'
 
     def get_context_data(self, *args, **kwargs):
-        print(f"CategoryList: {self.kwargs}")
-        if self.kwargs.get('category_id'):
-            categories = Category.objects.get_children_categories(self.kwargs.get('category_id'))
-        else:
-            categories = Category.objects.get_root_categories()
+        categories = Category.objects.get_root_categories()
         return {
             'categories': categories
         }
@@ -51,7 +48,9 @@ class ProductDetail(DetailView):
 
     def get_context_data(self, *args, **kwargs):
         product = get_object_or_404(Product, id=self.kwargs.get('pk'))
-        shopping_basket = get_object_or_404(ShoppingBasket, user=self.request.user)
+        shopping_basket = None
+        if not isinstance(self.request.user, AnonymousUser):
+            shopping_basket = ShoppingBasket.objects.get(user=self.request.user)
         return {
             'product': product,
             'basket': shopping_basket
@@ -64,7 +63,9 @@ class ShoppingBasketView(TemplateView):
     template_name = 'categories/shopping-basket.html'
 
     def get_context_data(self, *args, **kwargs):
-        shopping_basket = get_object_or_404(ShoppingBasket, user=self.request.user)
+        shopping_basket = None
+        if not isinstance(self.request.user, AnonymousUser):
+            shopping_basket = ShoppingBasket.objects.get(user=self.request.user)
         return {
             'basket': shopping_basket
         }

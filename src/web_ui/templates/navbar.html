@@ -6,10 +6,10 @@
 
 <nav>
   <div class="nav-wrapper container">
-    <a href="#" class="brand-logo">Logo</a>
+    <a href="{% url 'categories' %}" class="brand-logo">Online Shop</a>
     <ul class="right">
       <li>
-        <a href={% url 'products' 0 %}>Product list</a>
+        <a href={% url 'products' 5 %}>Product list</a>
       </li>
       <li>
         {% if user.is_authenticated %}
