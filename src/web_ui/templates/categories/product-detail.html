@@ -10,10 +10,15 @@
           <div class="card-title">
             {{ product.name }}, ${{ product.price }}
           </div>
-            {{ product.description }}
+          {{ product.description }}
         </div>
         <div class="card-action">
-          <a href="#">Buy</a>
+          <a id="addBasketButton-{{ product.id }}"
+             onclick="addProductInBasket({{ product.id }})"
+             product_id="{{ product.id }}"
+             url="{% url 'shopping_baskets:shopping-baskets-add-products' basket.id %}">
+            Buy
+          </a>
         </div>
       </div>
     </div>

@@ -2,79 +2,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Online Shop{% endblock %}</title>
+  <meta charset="UTF-8">
+  <title>{% block title %}Online Shop{% endblock %}</title>
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    {#    <link rel="stylesheet" href="{% static 'css/style.css' %}">#}
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js">
-    </script>
+  {#    <link rel="stylesheet" href="{% static 'css/style.css' %}">#}
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+  {#  <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>#}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js">
+  </script>
 
-    <style>
-        /* Remove default bullets */
-        ul {
-            list-style-type: none;
-        }
+  <style>
+    /* Remove default bullets */
+    ul {
+      list-style-type: none;
+    }
 
-        /* Remove margins and padding from the parent ul */
-        {% comment %}    #myUL {
-              margin: 0;
-              padding: 0;
-            }{% endcomment %}
+    /* Remove margins and padding from the parent ul */
+    {% comment %}    #myUL {
+          margin: 0;
+          padding: 0;
+        }{% endcomment %}
 
-        /* Style the caret/arrow */
-        .arrow {
-            cursor: pointer;
-            user-select: none; /* Prevent text selection */
-            {#margin-left: 20px;#}
-            margin-left: -13px;
-        }
+    /* Style the caret/arrow */
+    .arrow {
+      cursor: pointer;
+      user-select: none; /* Prevent text selection */
+    {#margin-left: 20px;#} margin-left: -13px;
+    }
 
-        /* Create the caret/arrow with a unicode, and style it */
-        .arrow::before {
-            content: "\25B6";
-            color: black;
-            display: inline-block;
-            {#margin-right: 6px;#}
-        }
+    /* Create the caret/arrow with a unicode, and style it */
+    .arrow::before {
+      content: "\25B6";
+      color: black;
+      display: inline-block;
+    {#margin-right: 6px;#}
+    }
 
-        /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
-        .arrow-down::before {
-            transform: rotate(90deg);
-        }
+    /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+    .arrow-down::before {
+      transform: rotate(90deg);
+    }
 
-        /* Hide the nested list */
-        .nested {
-            display: none;
-            margin-left: 20px;
-        }
+    /* Hide the nested list */
+    .nested {
+      display: none;
+      margin-left: 20px;
+    }
 
-        /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
-        .active {
-            display: block;
-            {#margin-left: -13px;#}
-        }
-    </style>
+    /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+    .active {
+      display: block;
+    {#margin-left: -13px;#}
+    }
 
-    <script>
-        $(document).ready(function () {
-            $(".dropdown-trigger").dropdown();
+    .delete-button {
+      color: #eeeeee;
+      cursor: pointer;
+    }
 
-            var toggler = document.getElementsByClassName("arrow");
-            var i;
+    .card-content:hover > .delete-button {
+      display: inline;
+      color: #424242;
+    }
+  </style>
 
-            for (i = 0; i < toggler.length; i++) {
-                toggler[i].addEventListener("click", function () {
-                    this.parentElement.querySelector(".nested").classList.toggle("active");
-                    this.classList.toggle("arrow-down");
-                });
-            }
-        });
-    </script>
+  <script>
+      $(document).ready(function () {
+          $(".dropdown-trigger").dropdown();
+
+          var toggler = document.getElementsByClassName("arrow");
+          var i;
+
+          for (i = 0; i < toggler.length; i++) {
+              toggler[i].addEventListener("click", function () {
+                  this.parentElement.querySelector(".nested").classList.toggle("active");
+                  this.classList.toggle("arrow-down");
+              });
+          }
+      });
+
+      function addProductInBasket(product_id) {
+          $.ajax({
+              url: $(`#addBasketButton-${product_id}`).attr('url'),
+              type: 'PUT',
+              data: {
+                  "products": [product_id]
+              },
+              success: function (result) {
+                  M.toast({html: 'Added to shopping basket!'});
+              }
+          });
+      }
+
+      function deleteProductFromBasket(basket_id, product_id) {
+          console.log(`deleteBasketButton:
+          ${basket_id}:
+          ${product_id} :
+          ${$(`#deleteBasketButton-${product_id}`).attr('url')}`);
+
+          $.ajax({
+              url: $(`#deleteBasketButton-${product_id}`).attr('url'),
+              type: 'DELETE',
+              success: function (result) {
+                  $('#product-' + product_id).remove();
+              }
+          });
+      }
+  </script>
 
 
 </head>
@@ -82,12 +120,12 @@
 {% include "./navbar.html" %}
 
 <div class="container row">
-    <div class="col s3">
-        {% include 'categories/category-list.html' %}
-    </div>
-    <div class="col s9">
-        {% block content %}{% endblock %}
-    </div>
+  <div class="col s3">
+    {% include 'categories/category-list.html' %}
+  </div>
+  <div class="col s9">
+    {% block content %}{% endblock %}
+  </div>
 </div>
 </body>
 </html>

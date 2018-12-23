@@ -98,17 +98,17 @@ class ShoppingBasketDetailAPIViewTestCase(APITestCase):
     def test_add_products_success_as_user(self):
         self.client.force_authenticate(self.user1)
         data = {
-            'products': [self.product1.id],
+            'products[]': [self.product1.id],
         }
         response = self.client.put(self.url_add_product, data)
         content = json.loads(response.content)
         self.assertEqual(200, response.status_code)
-        self.assertListEqual(content.get('products'), data['products'])
+        self.assertListEqual(content.get('products'), data['products[]'])
 
     def test_add_products_fail_as_another_user(self):
         self.client.force_authenticate(self.user2)
         data = {
-            'products': [self.product1.id],
+            'products[]': [self.product1.id],
         }
         response = self.client.put(self.url_add_product, data)
         self.assertEqual(403, response.status_code)
@@ -116,7 +116,7 @@ class ShoppingBasketDetailAPIViewTestCase(APITestCase):
     def test_add_products_fail_as_unauthorized(self):
         self.client.logout()
         data = {
-            'products': [self.product1.id],
+            'products[]': [self.product1.id],
         }
         response = self.client.put(self.url_add_product, data)
         self.assertEqual(401, response.status_code)

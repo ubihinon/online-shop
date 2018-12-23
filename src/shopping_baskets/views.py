@@ -30,20 +30,20 @@ class ShoppingBasketViewSet(mixins.RetrieveModelMixin,
     @action(
         detail=True,
         url_path='products',
-        methods=['PUT']
+        methods=['PUT'],
     )
     def add_products(self, request, *args, **kwargs):
         basket = ShoppingBasket.objects.get(id=self.kwargs.get('pk'), user=request.user)
 
         product_ids = []
-        for product_id in request.data.getlist('products'):
+        for product_id in dict(request.data).get('products[]'):
             if int(product_id) not in list(basket.products.all().values_list('id', flat=True)):
                 product_ids.append(product_id)
         basket.products.add(*product_ids)
 
         serializer = self.get_serializer(
             {
-                "products": Product.objects.filter(id__in=request.data.getlist('products'))
+                "products": Product.objects.filter(id__in=dict(request.data).get('products[]'))
             }
         )
         return Response(serializer.data)

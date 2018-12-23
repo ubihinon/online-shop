@@ -1,9 +1,11 @@
 from django.shortcuts import get_object_or_404
 from django.template.loader_tags import register
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 
 from categories.models import Category
 from products.models import Product
+from shopping_baskets.models import ShoppingBasket
+
 
 @register.simple_tag
 def show_categories():
@@ -49,6 +51,20 @@ class ProductDetail(DetailView):
 
     def get_context_data(self, *args, **kwargs):
         product = get_object_or_404(Product, id=self.kwargs.get('pk'))
+        shopping_basket = get_object_or_404(ShoppingBasket, user=self.request.user)
         return {
-            'product': product
+            'product': product,
+            'basket': shopping_basket
+        }
+
+
+class ShoppingBasketView(TemplateView):
+    model = ShoppingBasket
+    fields = ('products', 'user')
+    template_name = 'categories/shopping-basket.html'
+
+    def get_context_data(self, *args, **kwargs):
+        shopping_basket = get_object_or_404(ShoppingBasket, user=self.request.user)
+        return {
+            'basket': shopping_basket
         }
