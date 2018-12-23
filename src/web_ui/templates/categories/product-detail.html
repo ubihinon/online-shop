@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Product detail{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col s12">
+      <div class="card">
+        <div class="card-content">
+          <div class="card-title">
+            {{ product.name }}, ${{ product.price }}
+          </div>
+            {{ product.description }}
+        </div>
+        <div class="card-action">
+          <a href="#">Buy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

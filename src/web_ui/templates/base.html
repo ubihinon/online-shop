@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Online Shop{% endblock %}</title>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    {#    <link rel="stylesheet" href="{% static 'css/style.css' %}">#}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js">
+    </script>
+
+    <style>
+        /* Remove default bullets */
+        ul {
+            list-style-type: none;
+        }
+
+        /* Remove margins and padding from the parent ul */
+        {% comment %}    #myUL {
+              margin: 0;
+              padding: 0;
+            }{% endcomment %}
+
+        /* Style the caret/arrow */
+        .arrow {
+            cursor: pointer;
+            user-select: none; /* Prevent text selection */
+            {#margin-left: 20px;#}
+            margin-left: -13px;
+        }
+
+        /* Create the caret/arrow with a unicode, and style it */
+        .arrow::before {
+            content: "\25B6";
+            color: black;
+            display: inline-block;
+            {#margin-right: 6px;#}
+        }
+
+        /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+        .arrow-down::before {
+            transform: rotate(90deg);
+        }
+
+        /* Hide the nested list */
+        .nested {
+            display: none;
+            margin-left: 20px;
+        }
+
+        /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+        .active {
+            display: block;
+            {#margin-left: -13px;#}
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            $(".dropdown-trigger").dropdown();
+
+            var toggler = document.getElementsByClassName("arrow");
+            var i;
+
+            for (i = 0; i < toggler.length; i++) {
+                toggler[i].addEventListener("click", function () {
+                    this.parentElement.querySelector(".nested").classList.toggle("active");
+                    this.classList.toggle("arrow-down");
+                });
+            }
+        });
+    </script>
+
+
+</head>
+<body>
+{% include "./navbar.html" %}
+
+<div class="container row">
+    <div class="col s3">
+        {% include 'categories/category-list.html' %}
+    </div>
+    <div class="col s9">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+</body>
+</html>

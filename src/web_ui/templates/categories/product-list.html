@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Product list{% endblock %}
+
+{% block content %}
+  {% if category.products.exists %}
+    <div class="collection">
+      {% for product in category.products.all %}
+        <a href="{% url 'products-detail' category.id product.id %}" class="collection-item">
+          {{ product.name }}, ${{ product.price }}
+        </a>
+      {% endfor %}
+    </div>
+
+  {% else %}
+    <div class="row text-center">
+      There is no one product in this category
+    </div>
+  {% endif %}
+
+{% endblock %}

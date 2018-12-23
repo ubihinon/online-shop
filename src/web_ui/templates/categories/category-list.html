@@ -1,0 +1,145 @@
+{% show_categories as cats %}
+{% with d=cats.categories %}
+  {% for category in d %}
+    <ul>
+      <li>
+      <span class="{% if category.get_children %} arrow active arrow-down {% endif %}">
+        {% if not category.get_children %}
+          <a href="{% url 'products' category.id %}">{{ category.name }}</a>
+        {% else %}
+          {{ category.name }}
+        {% endif %}
+      </span>
+
+        {% if category.get_children %}
+          {% include "categories/nested_category.html" %}
+{#          <ul class="nested active">#}
+{#            {% for child in category.get_children %}#}
+{#              {% with category=child %}#}
+{#                <li>#}
+{#                  <a href="{% url 'products' child.id %}">#}
+{#                    {{ child.name }}#}
+{#                  </a>#}
+{#                </li>#}
+{#              {% endwith %}#}
+{#            {% endfor %}#}
+{#          </ul>#}
+
+        {% endif %}
+
+      </li>
+    </ul>
+  {% endfor %}
+{% endwith %}
+
+
+
+
+
+
+{% comment %}
+
+{% show_categories as cats %}
+{% with d=cats.categories %}
+  {% for category in d %}
+    <ul>
+      <li>
+      <span class="{% if category.get_children %} arrow active arrow-down {% endif %}">
+        {% if not category.get_children %}
+          <a href="{% url 'products' category.id %}">{{ category.name }}</a>
+        {% else %}
+          {{ category.name }}
+        {% endif %}
+      </span>
+        {% if category.get_children %}
+          {% with d=category.get_children %}
+            <ul class="nested active">
+              {% for child in category.get_children %}
+                <li>
+                  <a href="{% url 'products' child.id %}">
+                    {{ child.name }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endwith %}
+        {% endif %}
+      </li>
+    </ul>
+  {% endfor %}
+{% endwith %}
+{% endcomment %}
+
+
+{#<ul id="myUL">#}
+{#  <li><span class="caret">Beverages</span>#}
+{#    <ul class="nested">#}
+{#      <li>Water</li>#}
+{#      <li>Coffee</li>#}
+{#      <li><span class="caret">Tea</span>#}
+{#        <ul class="nested">#}
+{#          <li>Black Tea</li>#}
+{#          <li>White Tea</li>#}
+{#          <li><span class="caret">Green Tea</span>#}
+{#            <ul class="nested">#}
+{#              <li>Sencha</li>#}
+{#              <li>Gyokuro</li>#}
+{#              <li>Matcha</li>#}
+{#              <li>Pi Lo Chun</li>#}
+{#            </ul>#}
+{#          </li>#}
+{#        </ul>#}
+{#      </li>#}
+{#    </ul>#}
+{#  </li>#}
+{#</ul>#}
+
+{#{% for category in cats.categories %}#}
+{#    <ul id="myUL">#}
+{#    <li><span class="caret">{{ category.name }}</span> CATEGORY:{{ category.name }}, CHILDREN:#}
+{#    {% for child in category.get_children %}#}
+{#        {{ child }},#}
+{#    {% endfor %}#}
+{#    </ul>#}
+{#{% endfor %}#}
+
+
+{#<div class="collection">#}
+{#    {% for category in cats.categories %}#}
+{#        {% for child in category.get_children %}#}
+{#            <a href="{% url 'products' child.id %}" class="collection-item">#}
+{#                {{ child }}#}
+{#            </a>#}
+{#        {% endfor %}#}
+{#    {% endfor %}#}
+{#</div>#}
+
+{#{% for child in cats.first.get_children %}#}
+{#    <a href="{% url 'products' category.id %}" class="collection-item">#}
+{#        {{ category }}#}
+{#    </a>#}
+{#{% endfor %}#}
+
+{#{{ categories }}#}
+{#  <ul>#}
+{#    {% for category in categories %}#}
+{#      <li>#}
+{#        <a href="#">{{ category.name }}</a>#}
+{#      </li>#}
+{#    {% endfor %}#}
+{#  </ul>#}
+{#{% endblock %}#}
+{#    <ul id="myUL">#}
+{#      <li class="nested">#}
+{#        <a href="#" class="collection-item">{{ category }}</a>#}
+{#      </li>#}
+{#    </ul>#}
+{#  {% else %}#}
+{#    <li><span class="caret">{{ category }}</span></li>#}
+{#  {% endif %}#}
+
+{#  <ul id="myUL">#}
+{#    <a href="{% url 'categories-detail' category.id %}"#}
+{#       class="collection-item">{{ category.name }}</a>#}
+{#    <a href="#" class="collection-item">{{ category.name }}</a>#}
+{#  </ul>#}
