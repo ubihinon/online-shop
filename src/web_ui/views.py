@@ -1,16 +1,17 @@
-from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth import authenticate, login
 from django.db import transaction
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.template.loader_tags import register
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, CreateView
 
 from categories.models import Category
-from orders.forms import OrderForm
 from orders.models import Order
 from products.models import Product
 from shopping_baskets.models import ShoppingBasket
+from users.models import User
+from web_ui.forms import SignUpForm, OrderForm
 
 
 @register.simple_tag
@@ -94,3 +95,21 @@ class OrderCreate(CreateView):
 class OrderSuccess(TemplateView):
     model = Order
     template_name = 'orders/order-success.html'
+
+
+class SignupView(CreateView):
+    model = User
+    form_class = SignUpForm
+    template_name = 'registration/signup.html'
+
+    @transaction.atomic()
+    def post(self, request, *args, **kwargs):
+        form = self.get_form(SignUpForm)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return HttpResponseRedirect(reverse_lazy('categories'))
+        return render(request, 'registration/signup.html', {'form': form})
