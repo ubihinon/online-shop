@@ -27,9 +27,8 @@ class CategoryList(ListView):
     template_name = 'categories/categories.html'
 
     def get_context_data(self, *args, **kwargs):
-        categories = Category.objects.get_root_categories()
         return {
-            'categories': categories
+            'categories': Category.objects.get_root_categories()
         }
 
 
@@ -39,9 +38,8 @@ class ProductList(ListView):
     template_name = 'categories/product-list.html'
 
     def get_context_data(self, *args, **kwargs):
-        category = get_object_or_404(Category, id=self.kwargs.get('category_id'))
         return {
-            'category': category
+            'category': get_object_or_404(Category, id=self.kwargs.get('category_id'))
         }
 
 
@@ -52,13 +50,9 @@ class ProductDetail(DetailView):
     slug_field = 'product_id'
 
     def get_context_data(self, *args, **kwargs):
-        product = get_object_or_404(Product, id=self.kwargs.get('pk'))
-        shopping_basket = None
-        if not isinstance(self.request.user, AnonymousUser):
-            shopping_basket = ShoppingBasket.objects.get(user=self.request.user)
         return {
-            'product': product,
-            'basket': shopping_basket
+            'product': get_object_or_404(Product, id=self.kwargs.get('pk')),
+            'basket': ShoppingBasket.objects.get_user_shopping_basket(self.request.user),
         }
 
 
@@ -68,11 +62,8 @@ class ShoppingBasketView(TemplateView):
     template_name = 'categories/shopping-basket.html'
 
     def get_context_data(self, *args, **kwargs):
-        shopping_basket = None
-        if not isinstance(self.request.user, AnonymousUser):
-            shopping_basket = ShoppingBasket.objects.get(user=self.request.user)
         return {
-            'basket': shopping_basket
+            'basket': ShoppingBasket.objects.get_user_shopping_basket(self.request.user),
         }
 
 
@@ -82,11 +73,8 @@ class OrderCreate(CreateView):
     template_name = 'orders/order-create.html'
 
     def get_context_data(self, *args, **kwargs):
-        shopping_basket = None
-        if not isinstance(self.request.user, AnonymousUser):
-            shopping_basket = ShoppingBasket.objects.get(user=self.request.user)
         return {
-            'basket': shopping_basket,
+            'basket': ShoppingBasket.objects.get_user_shopping_basket(self.request.user),
             'form': OrderForm()
         }
 
@@ -97,9 +85,7 @@ class OrderCreate(CreateView):
             order = form.save(commit=False)
             order.user_id = request.user.id
 
-            shopping_basket = None
-            if not isinstance(self.request.user, AnonymousUser):
-                shopping_basket = ShoppingBasket.objects.get(user=self.request.user)
+            shopping_basket = ShoppingBasket.objects.get_user_shopping_basket(self.request.user)
             order.save()
             order.products.add(*[p['id'] for p in shopping_basket.products.all().values('id')])
             return HttpResponseRedirect(reverse_lazy('order-success'))

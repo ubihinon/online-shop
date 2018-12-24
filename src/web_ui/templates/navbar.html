@@ -8,6 +8,13 @@
   <div class="nav-wrapper container">
     <a href="{% url 'categories' %}" class="brand-logo">Online Shop</a>
     <ul class="right">
+      {% if user.is_authenticated %}
+        <li>
+          <a href={% url 'shopping-basket' %}>
+            <i class="medium material-icons">shopping_basket</i>
+          </a>
+        </li>
+      {% endif %}
       <li>
         <a href={% url 'products' 5 %}>Product list</a>
       </li>
@@ -20,9 +27,6 @@
         {% else %}
           <a href="{% url 'login' %}">login</a>
         {% endif %}
-      </li>
-      <li>
-        <a href={% url 'shopping-basket' %}>Shopping Basket</a>
       </li>
     </ul>
   </div>
