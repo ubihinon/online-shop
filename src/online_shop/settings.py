@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'categories',
     'web_ui',
     'shopping_baskets',
+    'orders',
 ]
 
 MIDDLEWARE = [
