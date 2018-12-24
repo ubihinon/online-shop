@@ -44,6 +44,10 @@ ADMIN_USERNAME = 'admin'
 ADMIN_EMAIL = 'admin@testsite.com'
 ADMIN_INITIAL_PASSWORD = 'admin'
 
+
+CSRF_USE_SESSIONS = True
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -135,6 +139,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
     'DEFAULT_FILTER_BACKENDS': (
