@@ -20,7 +20,8 @@ from django.urls import path, include
 from categories.views import CategoryList
 from online_shop import settings
 from orders.views import OrderSuccess, OrderCreate
-from products.views import ProductDetail, ProductUpdateView, ProductDeleteView, ProductList
+from products.views import ProductDetail, ProductUpdateView, ProductDeleteView, ProductList, \
+    ProductCreateView
 from shopping_baskets.views import ShoppingBasketView
 from users.views import SignupView
 
@@ -35,15 +36,17 @@ api_urls = [
 ]
 
 ui_urls = [
-    path('categories/<int:category_id>/products/<slug:pk>/', ProductDetail.as_view(),
+    path('categories/<int:category_id>/products/<int:pk>/', ProductDetail.as_view(),
          name='products-detail'),
-    path('categories/<int:category_id>/products/<slug:pk>/edit/', ProductUpdateView.as_view(),
+    path('categories/<int:category_id>/products/<int:pk>/edit/', ProductUpdateView.as_view(),
          name='product-edit'),
     path(
-        'categories/<int:category_id>/products/<slug:pk>/delete/',
+        'categories/<int:category_id>/products/<int:pk>/delete/',
         ProductDeleteView.as_view(),
         name='product-delete'
     ),
+    path('categories/<int:category_id>/products/add/', ProductCreateView.as_view(),
+         name='product-create-ui'),
     path('categories/<int:category_id>/products/', ProductList.as_view(), name='products'),
     path('shopping-basket/', ShoppingBasketView.as_view(), name='shopping-basket-ui'),
     path('order-success/', OrderSuccess.as_view(), name='order-success'),

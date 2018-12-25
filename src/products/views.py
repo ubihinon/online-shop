@@ -1,6 +1,8 @@
-from django.shortcuts import get_object_or_404
+from django.db import transaction
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.filters import SearchFilter
@@ -36,6 +38,7 @@ class ProductList(ListView):
 
     def get_context_data(self, *args, **kwargs):
         return {
+            'user': self.request.user,
             'category': get_object_or_404(Category, id=self.kwargs.get('category_id'))
         }
 
@@ -51,6 +54,31 @@ class ProductDetail(DetailView):
             'product': get_object_or_404(Product, id=self.kwargs.get('pk')),
             'basket': ShoppingBasket.objects.get_user_shopping_basket(self.request.user),
         }
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    template_name = 'products/product_edit.html'
+    form_class = ProductEditForm
+
+    def get_context_data(self, *args, **kwargs):
+        return {
+            'form': ProductEditForm(),
+            'user': self.request.user,
+            'category': get_object_or_404(Category, id=self.kwargs.get('category_id'))
+        }
+
+    @transaction.atomic()
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.category_id = self.kwargs.get('category_id')
+            product.save()
+            return HttpResponseRedirect(
+                reverse_lazy('products', kwargs={'category_id': self.kwargs.get('category_id')})
+            )
+        return render(request, 'products/product_list.html', {'form': form})
 
 
 class ProductUpdateView(UpdateView):
