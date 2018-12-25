@@ -35,7 +35,7 @@
       });
 
   </script>
-{% comment %}  <style>
+  <style>
     /* Style the caret/arrow */
     .arrow {
       cursor: pointer;
@@ -66,6 +66,14 @@
       display: block;
     }
 
+    .edit-buttons {
+      display: none;
+    }
+
+    .category-item:hover > .edit-buttons {
+      display: inline;
+    }
+
     .delete-button {
       color: #eeeeee;
       cursor: pointer;
@@ -76,7 +84,7 @@
       color: #424242;
     }
 
-  </style>{% endcomment %}
+  </style>
 
 </head>
 <body>

@@ -1,23 +1,24 @@
 <li>
-  <span class="{% if category.get_children %}arrow active{% endif %}">
+  <span class="{% if category.get_children %}arrow active{% endif %} category-item">
   {% if category.get_children %}
     {{ category.name }}
   {% else %}
-    <a href="{% url 'products' category.id %}" class="collection-item">
+    <a href="{% url 'products' category.id %}">
       {{ category.name }}
     </a>
   {% endif %}
     {% if user.is_superuser %}
+      <span class="edit-buttons">
       <a id="edit-{{ category.id }}" href="{% url 'category-edit' category.id %}">
         <i class="material-icons tiny gray">edit</i>
       </a>
       <a id="delete-{{ category.id }}" href="{% url 'category-delete' category.id %}">
         <i class="material-icons tiny">delete</i>
       </a>
+      </span>
     {% endif %}
   </span>
   {% if category.get_children %}
-
     <ul class="nested active">
       {% for ch in category.get_children %}
         {% with category=ch template_name="categories/nested_category.html" %}
