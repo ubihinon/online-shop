@@ -16,6 +16,65 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <script src="{% static 'js/shopping_basket.js' %}"></script>
   <script src="{% static 'js/categories.js' %}"></script>
+  <script>
+    $(document).ready(function () {
+    $(".dropdown-trigger").dropdown();
+
+    var toggler = document.getElementsByClassName("arrow");
+    var i;
+
+    for (i = 0; i < toggler.length; i++) {
+        toggler[i].addEventListener("click", function () {
+            this.parentElement.querySelector(".nested").classList.toggle("active");
+            this.classList.toggle("arrow-down");
+        });
+    }
+});
+
+  </script>
+  <style>
+    /* Style the caret/arrow */
+    .arrow {
+      cursor: pointer;
+      user-select: none; /* Prevent text selection */
+      margin-left: -13px;
+    }
+
+    /* Create the caret/arrow with a unicode, and style it */
+    .arrow::before {
+      content: "\25B6";
+      color: black;
+      display: inline-block;
+    }
+
+    /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+    .arrow-down::before {
+      transform: rotate(90deg);
+    }
+
+    /* Hide the nested list */
+    .nested {
+      display: none;
+      margin-left: 20px;
+    }
+
+    /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+    .active {
+      display: block;
+    }
+
+    .delete-button {
+      color: #eeeeee;
+      cursor: pointer;
+    }
+
+    .card-content:hover > .delete-button {
+      display: inline;
+      color: #424242;
+    }
+
+  </style>
+
 </head>
 <body>
 {% include "./navbar.html" %}

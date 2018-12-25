@@ -17,9 +17,18 @@ from web_ui.forms import SignUpForm, OrderForm
 @register.simple_tag
 def show_categories():
     return {
-        # 'categories': Category.objects.get_root_categories()
-        'categories': Category.objects.all()
+        'categories': Category.objects.get_root_categories()
     }
+
+
+def show_categories(request):
+    return render(
+        request,
+        'categories/category-list.html', {
+            'categories': Category.objects.filter(parent__isnull=True)
+            # 'categories': Category.objects.all()
+        }
+    )
 
 
 class CategoryList(ListView):
@@ -29,14 +38,14 @@ class CategoryList(ListView):
 
     def get_context_data(self, *args, **kwargs):
         return {
-            'categories': Category.objects.get_root_categories()
+            'categories': Category.objects.filter(parent__isnull=True)
         }
 
 
 class ProductList(ListView):
     model = Product
     fields = ('name', 'description')
-    template_name = 'categories/product-list.html'
+    template_name = 'products/product-list.html'
 
     def get_context_data(self, *args, **kwargs):
         return {
@@ -47,7 +56,7 @@ class ProductList(ListView):
 class ProductDetail(DetailView):
     model = Product
     fields = ('name', 'description')
-    template_name = 'categories/product-detail.html'
+    template_name = 'products/product-detail.html'
     slug_field = 'product_id'
 
     def get_context_data(self, *args, **kwargs):

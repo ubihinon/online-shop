@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import Value, CharField
 
 
 class CategoryQueryset(models.QuerySet):
@@ -29,34 +28,4 @@ class Category(models.Model):
         return ' -> '.join(full_path[::-1])
 
     def get_children(self):
-        return Category.objects.filter(parent=self)
-        # return Category.objects.annotate(children=Value(self, output_field=CharField())).filter(parent=self)
-        # return Category.objects.annotate(children=Value(self, output_field=CharField())).filter(parent=self)
-        # sub_categories = [self]
-        # k = self.parent
-        # while k is not None:
-        #     sub_categories.append(k)
-        #     k = k.parent
-        # return sub_categories[::-1]
-        # return Category.objects.filter(parent=self)
-
-        # return Category.objects.annotate(children=Value(F('category_parent').name, output_field=CharField())).filter(parent=self)
-        # return Category.objects.select_related('parent').annotate(children=Value(F('category_parent').name, output_field=CharField())).filter(parent=self)
-        # return Category.objects.extra(select={'parent': 'category.parent'})
-        # .select_related('parent')\
-
-        # sub_categories = [self]
-        # k = self.parent
-        # while k is not None:
-        #     sub_categories.append(k)
-        #     k = k.parent
-        # return sub_categories[::-1]
-
-        # # return Category.objects.filter(parent__category=self)
-        # return Category.objects.annotate(children=Value('dsf', output_field=CharField()))
-        # # sub_categories = [self]
-        # # k = self.parent
-        # # while k is not None:
-        # #     sub_categories.append(k)
-        # #     k = k.parent
-        # # return sub_categories[::-1]
+        return Category.objects.get_children_categories(self)

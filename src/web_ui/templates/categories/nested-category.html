@@ -1,0 +1,22 @@
+<li>
+  <span class="{% if category.get_children %}arrow active{% endif %}">
+  {% if category.get_children %}
+    {{ category.name }}
+    {% else %}
+        <a href="{% url 'products' category.id %}" class="collection-item">
+    {{ category.name }}
+  </a>
+  {% endif %}
+  </span>
+  {% if category.get_children %}
+
+    <ul class="nested active">
+
+      {% for ch in category.get_children %}
+        {% with category=ch template_name="categories/nested-category.html" %}
+          {% include template_name %}
+        {% endwith %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+</li>
