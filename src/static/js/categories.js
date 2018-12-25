@@ -1,6 +1,4 @@
-$(document).ready(function () {
-    $(".dropdown-trigger").dropdown();
-
+function initCategories() {
     var toggler = document.getElementsByClassName("arrow");
     var i;
 
@@ -10,4 +8,11 @@ $(document).ready(function () {
             this.classList.toggle("arrow-down");
         });
     }
+}
+
+$(document).ready(function () {
+    M.AutoInit();
+    $(".dropdown-trigger").dropdown();
+
+    initCategories()
 });

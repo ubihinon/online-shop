@@ -4,6 +4,7 @@ celery==4.2.1
 Django==2.1.4
 django-filter==2.0.0
 django-filters==0.2.1
+django-widget-tweaks==1.4.3
 djangorestframework==3.9.0
 ez-setup==0.9
 flake8==3.6.0
