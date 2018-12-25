@@ -17,7 +17,14 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+from categories.views import CategoryList, CategoryCreateView, CategoryDeleteView, \
+    CategoryUpdateView
 from online_shop import settings
+from orders.views import OrderSuccess, OrderCreate
+from products.views import ProductDetail, ProductUpdateView, ProductDeleteView, ProductList, \
+    ProductCreateView
+from shopping_baskets.views import ShoppingBasketView
+from users.views import SignupView
 
 api_urls = [
     path('products/', include(('products.urls', 'products'), namespace='products')),
@@ -28,8 +35,34 @@ api_urls = [
     ),
 ]
 
+ui_urls = [
+    path('categories/<int:category_id>/products/add/', ProductCreateView.as_view(),
+         name='product-create-ui'),
+    path('categories/<int:category_id>/products/<int:pk>/', ProductDetail.as_view(),
+         name='products-detail'),
+    path('categories/<int:category_id>/products/<int:pk>/edit/', ProductUpdateView.as_view(),
+         name='product-edit'),
+    path(
+        'categories/<int:category_id>/products/<int:pk>/delete/',
+        ProductDeleteView.as_view(),
+        name='product-delete'
+    ),
+    path('categories/<int:category_id>/products/', ProductList.as_view(), name='products'),
+    path('categories/add/', CategoryCreateView.as_view(), name='category-create-ui'),
+    path('categories/<slug:pk>/edit/', CategoryUpdateView.as_view(),
+         name='category-edit'),
+    path('categories/<int:pk>/delete/', CategoryDeleteView.as_view(),
+         name='category-delete'),
+    path('shopping-basket/', ShoppingBasketView.as_view(), name='shopping-basket-ui'),
+    path('order-success/', OrderSuccess.as_view(), name='order-success'),
+    path('order/', OrderCreate.as_view(), name='order-create'),
+    path('auth/', include('django.contrib.auth.urls')),
+    path('signup/', SignupView.as_view(), name='signup'),
+    path('', CategoryList.as_view(), name='categories'),
+]
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(api_urls)),
-    path('', include('web_ui.urls')),
+    path('', include(ui_urls)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

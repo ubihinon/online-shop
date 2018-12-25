@@ -1,0 +1,35 @@
+<ul id="userDetails" class="dropdown-content">
+  <li>
+    <a href={% url 'logout' %}>Log out</a>
+  </li>
+</ul>
+
+<nav>
+  <div class="nav-wrapper container">
+    <a href="{% url 'categories' %}" class="brand-logo">Online Shop</a>
+    <ul class="right">
+      {% if user.is_authenticated %}
+        <li>
+          <a href={% url 'shopping-basket-ui' %}>
+            <i class="medium material-icons">shopping_basket</i>
+          </a>
+        </li>
+      {% endif %}
+      <li>
+        {% if user.is_authenticated %}
+          <a class="dropdown-trigger" href="#" data-target="userDetails">
+            Hi, {{ user.username }}!
+            <i class="material-icons right">arrow_drop_down</i>
+          </a>
+        {% else %}
+          <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+      </li>
+      {% if not user.is_authenticated %}
+        <li>
+          <a href="{% url 'signup' %}">Signup</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>

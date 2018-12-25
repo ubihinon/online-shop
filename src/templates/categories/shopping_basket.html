@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Shopping basket{% endblock %}
+
+{% block content %}
+  {% if basket %}
+    {% if basket.products.all.exists %}
+      {% for product in basket.products.all %}
+        <div class="row" id="product-{{ product.id }}">
+          <div class="col s12">
+            <div class="card">
+              <div class="card-content">
+                <a id="deleteBasketButton-{{ product.id }}" class="delete-button"
+                   onclick="deleteProductFromBasket({{ basket.id }}, {{ product.id }})"
+                   url="{% url 'shopping_baskets:shopping-baskets-delete-product' basket.id product.id %}">
+                  <i class="small material-icons right">
+                    delete_forever
+                  </i>
+                </a>
+                <div class="card-title">
+                  {{ product.name }}, ${{ product.price }}
+                </div>
+                {{ product.description }}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      <div class="center-align row">
+        <a href="{% url 'order-create' %}" class="waves-effect waves-light btn">Order</a>
+      </div>
+    {% else %}
+      <h6 class="row center-align">
+        Shopping basket is empty:(
+      </h6>
+    {% endif %}
+  {% else %}
+    <h6 class="row center-align">
+      In order to add products in the shopping basket you need to register or log in
+    </h6>
+  {% endif %}
+{% endblock %}

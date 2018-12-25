@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Product list{% endblock %}
+
+{% block content %}
+  {% if category.products.exists %}
+    <div class="collection">
+      {% for product in category.products.all %}
+        <a href="{% url 'products-detail' category.id product.id %}" class="collection-item">
+          {{ product.name }}, ${{ product.price }}
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <h6 class="row center-align">
+      There is no one product in this category
+    </h6>
+  {% endif %}
+  {% if user.is_superuser %}
+    <div class="row center-align">
+      <a href="{% url 'product-create-ui' category.id %}" class="btn">
+        Add new
+      </a>
+    </div>
+  {% endif %}
+{% endblock %}

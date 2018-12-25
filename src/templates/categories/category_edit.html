@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Edit: {{ product.name }}{% endblock %}
+
+{% block content %}
+
+  <div class="card">
+    <div class="card-content">
+      <div class="card-title">
+        {% if category %}Edit category{% else %}Add new category{% endif %}
+      </div>
+      <form method="post">
+        {% csrf_token %}
+          {{ form }}
+        <div class="row center-align">
+          <button type="submit" class="btn">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -6,6 +6,6 @@ from users.models import User
 
 
 @receiver(post_save, sender=User)
-def create_sopping_basket(sender, instance, created=False, **kwargs):
+def create_shopping_basket(sender, instance, created=False, **kwargs):
     if created:
         ShoppingBasket.objects.create(user=instance)

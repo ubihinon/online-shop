@@ -25,24 +25,25 @@ services:
     volumes:
       - ./config:/config
       - ./src:/src
+      - ./src/templates:/templates
       - ./src/static:/static
     ports:
       - "8000:8000"
     expose:
       - "8000"
     env_file:
-      - src/online_shop/.env
+      - src/online_shop/settings/.env
 
   db:
     image: postgres:latest
     restart: always
     volumes:
       - ./config/init_db.sh:/docker-entrypoint-initdb.d/init_db.sh
-#      - ./postgres-data:/var/lib/postgresql/data
+      - ./postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     env_file:
-      - src/online_shop/.env
+      - src/online_shop/settings/.env
 
   redis:
     image: redis:2.8.19
@@ -63,5 +64,5 @@ services:
     entrypoint:
       - /config/run_celery.sh
     env_file:
-      - src/online_shop/.env
+      - src/online_shop/settings/.env
 

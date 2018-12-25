@@ -1,0 +1,12 @@
+{% load show_categories %}
+{% show_categories as cats %}
+<ul>
+  {% for category in cats.categories %}
+    {% include "categories/nested_category.html" %}
+  {% endfor %}
+</ul>
+{% if user.is_superuser %}
+  <a href="{% url 'category-create-ui' %}" class="btn">
+    Add new category
+  </a>
+{% endif %}
