@@ -17,14 +17,14 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from categories.views import CategoryList
+from categories.views import CategoryList, CategoryCreateView, CategoryDeleteView, \
+    CategoryUpdateView
 from online_shop import settings
 from orders.views import OrderSuccess, OrderCreate
 from products.views import ProductDetail, ProductUpdateView, ProductDeleteView, ProductList, \
     ProductCreateView
 from shopping_baskets.views import ShoppingBasketView
 from users.views import SignupView
-
 
 api_urls = [
     path('products/', include(('products.urls', 'products'), namespace='products')),
@@ -48,6 +48,11 @@ ui_urls = [
     path('categories/<int:category_id>/products/add/', ProductCreateView.as_view(),
          name='product-create-ui'),
     path('categories/<int:category_id>/products/', ProductList.as_view(), name='products'),
+    path('categories/add/', CategoryCreateView.as_view(), name='category-create-ui'),
+    path('categories/<slug:pk>/edit/', CategoryUpdateView.as_view(),
+         name='category-edit'),
+    path('categories/<int:pk>/delete/', CategoryDeleteView.as_view(),
+         name='category-delete'),
     path('shopping-basket/', ShoppingBasketView.as_view(), name='shopping-basket-ui'),
     path('order-success/', OrderSuccess.as_view(), name='order-success'),
     path('order/', OrderCreate.as_view(), name='order-create'),

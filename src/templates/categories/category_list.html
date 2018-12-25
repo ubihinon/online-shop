@@ -5,3 +5,8 @@
     {% include "categories/nested_category.html" %}
   {% endfor %}
 </ul>
+{% if user.is_superuser %}
+  <a href="{% url 'category-create-ui' %}" class="btn">
+    Add new category
+  </a>
+{% endif %}

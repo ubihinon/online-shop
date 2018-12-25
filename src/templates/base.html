@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}Online Shop{% endblock %}</title>
-{#  <script src="{% static 'js/shopping_basket.js' %}"></script>#}
+  {#  <script src="{% static 'js/shopping_basket.js' %}"></script>#}
   <script type="text/javascript" src="{% static 'js/categories.js' %}">
   </script>
   <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
@@ -15,26 +15,27 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js">
   </script>
 
-{#  <link rel="stylesheet" href="{% static 'css/style.css' %}">#}
-{#  <script src="{% static 'js/shopping_basket.js' %}"></script>#}
-{#  <script src="{% static 'js/categories.js' %}"></script>#}
+  {#  <link rel="stylesheet" href="{% static 'css/style.css' %}">#}
+  {#  <script src="{% static 'js/shopping_basket.js' %}"></script>#}
+  {#  <script src="{% static 'js/categories.js' %}"></script>#}
   <script>
-    $(document).ready(function () {
-    $(".dropdown-trigger").dropdown();
+      $(document).ready(function () {
+          M.AutoInit();
+          $(".dropdown-trigger").dropdown();
 
-    var toggler = document.getElementsByClassName("arrow");
-    var i;
+          var toggler = document.getElementsByClassName("arrow");
+          var i;
 
-    for (i = 0; i < toggler.length; i++) {
-        toggler[i].addEventListener("click", function () {
-            this.parentElement.querySelector(".nested").classList.toggle("active");
-            this.classList.toggle("arrow-down");
-        });
-    }
-});
+          for (i = 0; i < toggler.length; i++) {
+              toggler[i].addEventListener("click", function () {
+                  this.parentElement.querySelector(".nested").classList.toggle("active");
+                  this.classList.toggle("arrow-down");
+              });
+          }
+      });
 
   </script>
-  <style>
+{% comment %}  <style>
     /* Style the caret/arrow */
     .arrow {
       cursor: pointer;
@@ -75,7 +76,7 @@
       color: #424242;
     }
 
-  </style>
+  </style>{% endcomment %}
 
 </head>
 <body>
