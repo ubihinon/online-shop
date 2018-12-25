@@ -5,6 +5,13 @@ from web_ui import views
 urlpatterns = [
     path('categories/<int:category_id>/products/<slug:pk>/', views.ProductDetail.as_view(),
          name='products-detail'),
+    path('categories/<int:category_id>/products/<slug:pk>/edit/', views.ProductUpdateView.as_view(),
+         name='product-edit'),
+    path(
+        'categories/<int:category_id>/products/<slug:pk>/delete/',
+        views.ProductDeleteView.as_view(),
+        name='product-delete'
+    ),
     path('categories/<int:category_id>/products/', views.ProductList.as_view(), name='products'),
     path('shopping-basket/', views.ShoppingBasketView.as_view(), name='shopping-basket'),
     path('order-success/', views.OrderSuccess.as_view(), name='order-success'),
