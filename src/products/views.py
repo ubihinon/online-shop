@@ -33,13 +33,12 @@ class ProductViewSet(viewsets.ModelViewSet):
 
 class ProductList(ListView):
     model = Product
-    fields = ('name', 'description')
     template_name = 'products/product_list.html'
 
     def get_context_data(self, *args, **kwargs):
         return {
             'user': self.request.user,
-            'category': get_object_or_404(Category, id=self.kwargs.get('category_id'))
+            'category': Category.objects.get(id=self.kwargs.get('category_id'))
         }
 
 
@@ -65,7 +64,7 @@ class ProductCreateView(CreateView):
         return {
             'form': ProductEditForm(),
             'user': self.request.user,
-            'category': get_object_or_404(Category, id=self.kwargs.get('category_id'))
+            'category': Category.objects.get(id=self.kwargs.get('category_id'))
         }
 
     @transaction.atomic()
@@ -78,7 +77,7 @@ class ProductCreateView(CreateView):
             return HttpResponseRedirect(
                 reverse_lazy('products', kwargs={'category_id': self.kwargs.get('category_id')})
             )
-        return render(request, 'products/product_list.html', {'form': form})
+        return render(request, 'products/product_edit.html', {'form': form})
 
 
 class ProductUpdateView(UpdateView):

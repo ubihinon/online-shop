@@ -16,6 +16,8 @@ from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv, find_dotenv
 from kombu import Queue, Exchange
 
+from common.utils import is_test_environment
+
 
 def get_env_var(var_name):
     try:
@@ -27,7 +29,10 @@ def get_env_var(var_name):
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-load_dotenv(find_dotenv('.env_local'))
+if is_test_environment():
+    load_dotenv(find_dotenv('.env_local'))
+else:
+    load_dotenv(find_dotenv('.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/

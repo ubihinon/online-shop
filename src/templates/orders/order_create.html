@@ -3,7 +3,7 @@
 {% block title %}Order{% endblock %}
 
 {% block content %}
-  {% if basket %}
+  {% if user.is_authenticated %}
     <div class="row">
       <div class="col s12">
         <div class="card">

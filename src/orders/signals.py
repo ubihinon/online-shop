@@ -6,5 +6,5 @@ from orders.tasks import send_order_email
 
 
 @receiver(post_save, sender=Order)
-def create_shopping_basket(sender, instance, created=False, **kwargs):
+def send_order_notification(sender, instance, created=False, **kwargs):
     send_order_email.delay(user_id=instance.user.id, order_id=instance.id)

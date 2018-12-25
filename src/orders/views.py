@@ -1,5 +1,6 @@
 from django.db import transaction
 from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
 
@@ -16,7 +17,8 @@ class OrderCreate(CreateView):
     def get_context_data(self, *args, **kwargs):
         return {
             'basket': ShoppingBasket.objects.get_user_shopping_basket(self.request.user),
-            'form': OrderForm()
+            'form': OrderForm(),
+            'user': self.request.user
         }
 
     @transaction.atomic()
@@ -25,11 +27,11 @@ class OrderCreate(CreateView):
         if form.is_valid():
             order = form.save(commit=False)
             order.user_id = request.user.id
-
             shopping_basket = ShoppingBasket.objects.get_user_shopping_basket(self.request.user)
             order.save()
             order.products.add(*[p['id'] for p in shopping_basket.products.all().values('id')])
             return HttpResponseRedirect(reverse_lazy('order-success'))
+        return render(request, 'orders/order_create.html', {'form': form})
 
 
 class OrderSuccess(TemplateView):

@@ -25,6 +25,7 @@ services:
     volumes:
       - ./config:/config
       - ./src:/src
+      - ./src/templates:/templates
       - ./src/static:/static
     ports:
       - "8000:8000"

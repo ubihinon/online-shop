@@ -36,6 +36,8 @@ api_urls = [
 ]
 
 ui_urls = [
+    path('categories/<int:category_id>/products/add/', ProductCreateView.as_view(),
+         name='product-create-ui'),
     path('categories/<int:category_id>/products/<int:pk>/', ProductDetail.as_view(),
          name='products-detail'),
     path('categories/<int:category_id>/products/<int:pk>/edit/', ProductUpdateView.as_view(),
@@ -45,8 +47,6 @@ ui_urls = [
         ProductDeleteView.as_view(),
         name='product-delete'
     ),
-    path('categories/<int:category_id>/products/add/', ProductCreateView.as_view(),
-         name='product-create-ui'),
     path('categories/<int:category_id>/products/', ProductList.as_view(), name='products'),
     path('categories/add/', CategoryCreateView.as_view(), name='category-create-ui'),
     path('categories/<slug:pk>/edit/', CategoryUpdateView.as_view(),
