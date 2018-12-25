@@ -5,7 +5,9 @@
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}Online Shop{% endblock %}</title>
-
+{#  <script src="{% static 'js/shopping_basket.js' %}"></script>#}
+  <script type="text/javascript" src="{% static 'js/categories.js' %}">
+  </script>
   <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet"
@@ -13,10 +15,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js">
   </script>
 
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  <script src="{% static 'js/shopping_basket.js' %}"></script>
-  <script src="{% static 'js/categories.js' %}"></script>
-  <script>
+{#  <link rel="stylesheet" href="{% static 'css/style.css' %}">#}
+{#  <script src="{% static 'js/shopping_basket.js' %}"></script>#}
+{#  <script src="{% static 'js/categories.js' %}"></script>#}
+{% comment %}  <script>
     $(document).ready(function () {
     $(".dropdown-trigger").dropdown();
 
@@ -73,7 +75,7 @@
       color: #424242;
     }
 
-  </style>
+  </style>{% endcomment %}
 
 </head>
 <body>
