@@ -1,6 +1,7 @@
+{% load show_categories %}
 {% show_categories as cats %}
 <ul>
   {% for category in cats.categories %}
-    {% include "categories/nested-category.html" %}
+    {% include "categories/nested_category.html" %}
   {% endfor %}
 </ul>

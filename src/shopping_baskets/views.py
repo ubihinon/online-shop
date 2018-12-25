@@ -1,3 +1,4 @@
+from django.views.generic import TemplateView
 from rest_framework import mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -59,3 +60,14 @@ class ShoppingBasketViewSet(mixins.RetrieveModelMixin,
             basket.products.remove(self.kwargs.get('product_id'))
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class ShoppingBasketView(TemplateView):
+    model = ShoppingBasket
+    fields = ('products', 'user')
+    template_name = 'categories/shopping_basket.html'
+
+    def get_context_data(self, *args, **kwargs):
+        return {
+            'basket': ShoppingBasket.objects.get_user_shopping_basket(self.request.user),
+        }

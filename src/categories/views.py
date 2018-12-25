@@ -1,3 +1,4 @@
+from django.views.generic import ListView
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
@@ -20,3 +21,14 @@ class CategoryViewSet(viewsets.ModelViewSet):
         if self.action in ('create', 'update'):
             return CategoryCreateSerializer
         return CategorySerializer
+
+
+class CategoryList(ListView):
+    model = Category
+    fields = ('id', 'name',)
+    template_name = 'categories/categories.html'
+
+    def get_context_data(self, *args, **kwargs):
+        return {
+            'categories': Category.objects.filter(parent__isnull=True)
+        }

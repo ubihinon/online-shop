@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Edit: {{ product.name }}{% endblock %}
+
+{% block content %}
+  {% load field_errors %}
+  {% load widget_tweaks %}
+
+  <div class="card">
+    <div class="card-content">
+      <div class="card-title">
+        Edit
+      </div>
+      <form method="post">
+        {% csrf_token %}
+        <div class="row">
+          <div class="input-field col s12">
+            <label for="{{ form.name.id_for_label }}">Name</label>
+            {{ form.name }}
+            {% field_errors form.name %}
+          </div>
+          <div class="input-field col s12">
+            <label for="{{ form.description.id_for_label }}">Description</label>
+            {% render_field form.description class+="materialize-textarea" %}
+            {% field_errors form.description %}
+          </div>
+          <div class="input-field col s12">
+            <label for="{{ form.price.id_for_label }}">Price</label>
+            {{ form.price }}
+            {% field_errors form.price %}
+          </div>
+        </div>
+        <div class="row center-align">
+          <button type="submit" class="btn">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
