@@ -108,3 +108,4 @@ venv.bak/
 /venv/
 /.idea/
 /src/online_shop/.env_local
+/src/online_shop/settings/.env_local
